@@ -9,9 +9,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String description;
+    private double amount;
+    private Long userId;
 
-    private String name;
-    private String email;
 
     // Getter and Setter for name
     public String getName() {

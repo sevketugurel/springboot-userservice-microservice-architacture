@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Kullanıcılarla ilgili HTTP isteklerini yöneten controller sınıfı
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -16,6 +17,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // Yeni kullanıcı oluşturma
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
@@ -26,6 +28,7 @@ public class UserController {
         }
     }
 
+    // Tüm kullanıcıları getirme
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
         try {
@@ -39,6 +42,7 @@ public class UserController {
         }
     }
 
+    // ID'ye göre kullanıcı getirme
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         try {
@@ -53,6 +57,7 @@ public class UserController {
         }
     }
 
+    // Mevcut kullanıcıyı güncelleme
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         try {
@@ -67,6 +72,7 @@ public class UserController {
         }
     }
 
+    // ID'ye göre kullanıcı silme
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         try {
