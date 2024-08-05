@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,15 +22,27 @@ public class UserController {
         return ResponseEntity.ok("User created successfully");
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable String userId) {
-        Optional<User> user = userService.getUserById(userId);
+    @GetMapping("/{nickname}")
+    public ResponseEntity<User> getUserByNickname(@PathVariable String nickname) {
+        Optional<User> user = userService.getUserByNickname(nickname);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUserById(@PathVariable String userId) {
-        userService.deleteUserById(userId);
+    @DeleteMapping("/{nickname}")
+    public ResponseEntity<String> deleteUserByNickname(@PathVariable String nickname) {
+        userService.deleteUserByNickname(nickname);
         return ResponseEntity.ok("User deleted successfully");
+    }
+
+    @PutMapping
+    public ResponseEntity<String> updateUser(@RequestBody User user) {
+        userService.updateUser(user);
+        return ResponseEntity.ok("User updated successfully");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 }

@@ -6,16 +6,25 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 @DynamoDbBean
 public class User {
     private String userId;
+    private String nickname;
     private String name;
     private String email;
 
-    @DynamoDbPartitionKey
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @DynamoDbPartitionKey
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getName() {

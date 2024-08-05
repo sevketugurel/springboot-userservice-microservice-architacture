@@ -4,9 +4,12 @@ import com.example.userservice.model.User;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,22 +17,33 @@ public class UserRepository {
 
     private final DynamoDbTable<User> userTable;
 
-    public UserRepository(DynamoDbClient dynamoDbClient) {
-        DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
-                .dynamoDbClient(dynamoDbClient)
-                .build();
-        this.userTable = enhancedClient.table("Users", TableSchema.fromBean(User.class));
+    @Autowired
+    public UserRepository(DynamoDbEnhancedClient dynamoDbEnhancedClient) {
+        this.userTable = dynamoDbEnhancedClient.table("Users", TableSchema.fromBean(User.class));
     }
 
     public void saveUser(User user) {
         userTable.putItem(user);
     }
 
-    public Optional<User> getUserById(String userId) {
-        return Optional.ofNullable(userTable.getItem(r -> r.key(k -> k.partitionValue(userId))));
+    public Optional<User> getUserByNickname(String nickname) {
+        return Optional.ofNullable(userTable.getItem(r -> r.key(k -> k.partitionValue(nickname))));
     }
 
-    public void deleteUserById(String userId) {
-        userTable.deleteItem(r -> r.key(k -> k.partitionValue(userId)));
+    public void deleteUserByNickname(String nickname) {
+        userTable.deleteItem(r -> r.key(k -> k.partitionValue(nickname)));
+    }
+
+    public void updateUser(User user) {
+        userTable.putItem(user);
+    }
+
+    public List<User> findAll() {
+        Iterator<User> results = userTable.scan().items().iterator();
+        List<User> users = new ArrayList<>();
+        while (results.hasNext()) {
+            users.add(results.next());
+        }
+        return users;
     }
 }
