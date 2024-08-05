@@ -1,23 +1,23 @@
 package com.example.userservice.model;
 
-import jakarta.persistence.*;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-@Entity
-@Table(name = "users")
+@DynamoDbBean
 public class User {
+    private String userId;
+    private String name;
+    private String email;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @DynamoDbPartitionKey
+    public String getUserId() {
+        return userId;
+    }
 
-    private String name;  // Add this line
-    private String email; // Add this line
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    private String description;
-    private double amount;
-    private Long userId;
-
-    // Getter and Setter for name
     public String getName() {
         return name;
     }
@@ -26,48 +26,11 @@ public class User {
         this.name = name;
     }
 
-    // Getter and Setter for email
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    // Getter and Setter for id
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    // Getter and Setter for description
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    // Getter and Setter for amount
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    // Getter and Setter for userId
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 }
