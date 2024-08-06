@@ -15,17 +15,22 @@ import java.util.Optional;
 @Repository
 public class UserRepository {
 
+    // User nesnelerini tutacak DynamoDB tablosunu temsil eder.
     private final DynamoDbTable<User> userTable;
 
+    //Bu metod enhancedclient kullanarak “Users” adındaki DynamoDB tablosunu ve User sınıfına karşılık gelen tablo
+    // şemasını oluşturur.
     @Autowired
-    public UserRepository(DynamoDbEnhancedClient dynamoDbEnhancedClient) {
-        this.userTable = dynamoDbEnhancedClient.table("Users", TableSchema.fromBean(User.class));
+    public UserRepository(DynamoDbEnhancedClient DynamoDbIstemcisi) {
+        // User sınıfına karşılık gelen tablo şemasını oluşturuluyor
+        this.userTable = DynamoDbIstemcisi.table("Users", TableSchema.fromBean(User.class));
     }
 
     public void saveUser(User user) {
-        userTable.putItem(user);
+        userTable.putItem(user); //Verilen kullanıcı nesnesini tabloya eklniyor
     }
 
+    // nickname alanına göre kullanıcı arar ve bulursa Optional<User> nesnesi döner.
     public Optional<User> getUserByNickname(String nickname) {
         return Optional.ofNullable(userTable.getItem(r -> r.key(k -> k.partitionValue(nickname))));
     }
@@ -39,8 +44,10 @@ public class UserRepository {
     }
 
     public List<User> findAll() {
+        // Tablodaki tüm kullanıcıları döner ve bir liste oluşturur
         Iterator<User> results = userTable.scan().items().iterator();
         List<User> users = new ArrayList<>();
+        // Tüm sonuçları listeye ekler
         while (results.hasNext()) {
             users.add(results.next());
         }

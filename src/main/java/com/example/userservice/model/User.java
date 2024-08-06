@@ -3,6 +3,7 @@ package com.example.userservice.model;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
+// DynanmıDB tablosu için User sınıfı
 @DynamoDbBean
 public class User {
     private String userId;
@@ -10,6 +11,7 @@ public class User {
     private String name;
     private String email;
 
+    // getter ve setter metotları
     public String getUserId() {
         return userId;
     }
@@ -18,6 +20,7 @@ public class User {
         this.userId = userId;
     }
 
+    // nickname alanının DynamoDB tablosunda birincil anahtar olarak kullanılacağını belirtir.
     @DynamoDbPartitionKey
     public String getNickname() {
         return nickname;

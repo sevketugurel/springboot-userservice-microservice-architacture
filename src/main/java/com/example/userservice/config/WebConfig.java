@@ -11,8 +11,10 @@ public class WebConfig {
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
+            // CORS ayarlarını yapılandır
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                // CORS eşlemeleri ve izin verilen kaynaklar
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")

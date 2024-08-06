@@ -45,4 +45,16 @@ public class UserController {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/{nickname}/orders")
+    public ResponseEntity<List<Object>> getUserOrders(@PathVariable String nickname) {
+        List<Object> orders = userService.getUserOrders(nickname);
+        return ResponseEntity.ok(orders);
+    }
+
+    @PostMapping("/{nickname}/orders")
+    public ResponseEntity<String> createUserOrder(@PathVariable String nickname, @RequestBody Object order) {
+        userService.createUserOrder(nickname, order);
+        return ResponseEntity.ok("Order created successfully");
+    }
 }
